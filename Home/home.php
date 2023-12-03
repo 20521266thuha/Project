@@ -40,10 +40,10 @@ include "db_conn.php";
         </div>
         <ul class="navbar__menu">
           <li class="navbar__item">
-            <a href="/" class="navbar__links">Home</a>
+            <a href="home.php" class="navbar__links">Home</a>
           </li>
           <li class="navbar__item">
-            <a href="/tech.html" class="navbar__links">About us</a>
+            <a href="https://www.instagram.com/mia.bookcorner/" class="navbar__links">About us</a>
           </li>
           <li class="navbar__item">
             <a href="/" class="navbar__links">Contact</a>
@@ -73,7 +73,7 @@ include "db_conn.php";
 
     <form action="search.php" method="get" style="background-color: beige; padding-top: 30px; padding-left: 69px;">
       <label for="searchQuery" style="display: none;">Search book</label>
-      <input name="text" id="searchQuery" style="height: 35px; width: 300px; margin-left: 81px;" name="q" placeholder="Search book...">
+      <input id="search" name="text" id="searchQuery" style="height: 35px; width: 300px; margin-left: 81px;" name="q" placeholder="Search book...">
       <button name="submit" style="height: 37px; width: 42px; font-size: 16px; cursor: pointer;">
           &#128269; <!-- Unicode for Magnifying Glass -->
       </button>
@@ -91,11 +91,12 @@ include "db_conn.php";
       <div class="row6">
           <div class="row<?php echo $book->id; ?>">
               <img src="./Assets/<?php echo $book->cover; ?>" alt="">
-              <p><b><?php echo $book->title; ?></b></p>
-              <p><i>Author: <?php echo $book->author_id; ?></i></p>
+              <p style="color: #097969; padding-top: 20px"><b><?php echo $book->title; ?></b></p>
+              <p style="font-size: 15px;"><i>Author: <?php echo $book->author_id; ?></i></p>
               <p><?php echo $book->short_desc; ?></p>
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $book->id; ?>" id="<?php echo $book->id; ?>" 
               onclick="showDetails(this);">Review</button>
+              <a href="<?php echo $book->link; ?>" target="_blank" class="btn btn-success">Buy</a>
           </div>  
       </div>
 
@@ -107,7 +108,7 @@ include "db_conn.php";
     ?>
 
     <div class="modal fade" id="exampleModal<?php echo $book->id; ?>">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" style="height: 300px">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" style="height: 550px">
             <div class="modal-content">
                 <!-- Modal content... -->
                 <div class="modal-header bg-warning-subtle">
@@ -119,7 +120,6 @@ include "db_conn.php";
                 </div>
                 <div class="modal-footer bg-warning-subtle">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Save</button>
                 </div>
             </div>
         </div>

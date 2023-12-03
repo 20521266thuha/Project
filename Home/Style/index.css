@@ -362,9 +362,6 @@
   max-width: 300px;
   margin-left: 60px;
   margin-top: 40px;}
-.row6 button{
-  padding-bottom: 0px;
-}
 .row7{
   flex: 1;
   max-width: 300px;
@@ -381,7 +378,12 @@
   margin-left: 60px;
   margin-top: 40px;
 }
-
+.row10{
+  flex: 1;
+  max-width: 300px;
+  margin-left: 60px;
+  margin-top: 40px;
+}
 .row3 img{
   width: 250px;
   height: 292px;
@@ -415,6 +417,10 @@
   height: 292px;
 }
 .row9 img{
+  width: 250px;
+  height: 292px;
+}
+.row10 img{
   width: 250px;
   height: 292px;
 }
