@@ -68,129 +68,72 @@ include "db_conn.php";
         </div>
     </div>
 
-    <div id="search"class="space" style="HEIGHT: 30px; background-color: #fada5e ">
+    <div class="space" style="HEIGHT: 30px; background-color: #fada5e ">
     </div>
 
-    <form action="/search" method="get" style="    background-color: beige;padding-top: 30px;padding-left: 69px;">
-        <input type="text" id="searchQuery" style="height: 35px; width: 300px; margin-left: 81px" name="q" placeholder="Search book...  ">
-        <button type="submit" style="height: 37px; width: 42px; font-size: 16px; cursor: pointer;">&#128269; <!-- Unicode for Magnifying Glass --></button>
+    <form action="search.php" method="get" style="background-color: beige; padding-top: 30px; padding-left: 69px;">
+      <label for="searchQuery" style="display: none;">Search book</label>
+      <input name="text" id="searchQuery" style="height: 35px; width: 300px; margin-left: 81px;" name="q" placeholder="Search book...">
+      <button name="submit" style="height: 37px; width: 42px; font-size: 16px; cursor: pointer;">
+          &#128269; <!-- Unicode for Magnifying Glass -->
+      </button>
     </form>
 
-    <div class="book">
-      <div class="Book-container">
-        <div class="row1">
-          <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>
-        </div>
 
-        <div class="row2">
-        <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>
-        </div>
-
-        <div class="row3">
-        <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button> 
-        </div>
-      </div>
-    
-      <div class="Book-container1">
-        <div class="row4">
-        <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>     
-        </div>
-
-        <div class="row5">
-        <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>
-        </div>
-
-        <div class="row6">
-        <img src="./Assets/s1.jpg" alt="">
-          <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-          <p style="font-size: 13px">By: Tony Buoi Sang</p>
-          <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>
-        </div>
-      </div>
-
-      <div class="Book-container2">
+    <?php
+      $counter = 0;
+      while ($book = mysqli_fetch_object($result)) {
+          $counter++;
+          if ($counter % 3 == 1) {
+              echo '<div class="Book-container2">';
+          }
+    ?>
       <div class="row6">
-      <img src="./Assets/s1.jpg" alt="">
-        <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-        <p style="font-size: 13px">By: Tony Buoi Sang</p>
-        <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-          </button>     
+          <div class="row<?php echo $book->id; ?>">
+              <img src="./Assets/<?php echo $book->cover; ?>" alt="">
+              <p><b><?php echo $book->title; ?></b></p>
+              <p><i>Author: <?php echo $book->author_id; ?></i></p>
+              <p><?php echo $book->short_desc; ?></p>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $book->id; ?>" id="<?php echo $book->id; ?>" 
+              onclick="showDetails(this);">Review</button>
+          </div>  
       </div>
 
-      <?php
-      while ($id = mysqli_fetch_object($result)) {
-      ?>
+    <?php
+    // End the current row after every 3 books
+    if ($counter % 3 == 0) {
+        echo '</div>'; // Close Book-container2
+    }
+    ?>
 
-      <div class="row7">
-      <img src="./Assets/s1.jpg" alt="">
-        <p style="font-size: 14px"><b>Coffee with Tony</b></p>
-        <p style="font-size: 13px">By: Tony Buoi Sang</p>
-        <p>We believe that young people always have a desire to improve themselves to be a good person, and there are many ways to motivate them to make it happen.</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review
-        </button> 
-      </div>
-
-      <div class="row8">
-        <img src="./Assets/<?php echo $id->cover; ?>" alt="">
-        <p><b><?php echo $id->title; ?></b></p>
-        <p><i>Author: <?php echo $id->author_id; ?></i></p>
-        <p><?php echo $id->short_desc; ?></p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review</button>
-      </div>
-    
-
-
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable" style="height: 300px">
-              <div class="modal-content">
+    <div class="modal fade" id="exampleModal<?php echo $book->id; ?>">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" style="height: 300px">
+            <div class="modal-content">
+                <!-- Modal content... -->
                 <div class="modal-header bg-warning-subtle">
-                  <h3 class="modal-title" fs-5 id="exampleModalLabel">Review</h3>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="modal-title" fs-5 id="exampleModalLabel"><?php echo $book->title; ?></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body bg-success-subtle border border-dark">
-                  <p><?php echo $id->description; ?></p>
+                    <p><?php echo $book->description; ?></p>
                 </div>
                 <div class="modal-footer bg-warning-subtle">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Save</button>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
     </div>
     <?php
-      } 
-      ?>
+}
 
+// Close any open container if the total number of books is not a multiple of 3
+if ($counter % 3 != 0) {
+    echo '</div>'; // Close Book-container2
+}
+?>
+
+          <!-- Footer -->
     <div class="footer__container">
       <div class="footer__links">
         <div class="footer__link--wrapper">
@@ -273,22 +216,11 @@ include "db_conn.php";
 
 
     <script>
-      function openModal(bookId) {
-        // Use AJAX to fetch book details from the server based on bookId
-        // For simplicity, I'm just displaying a sample text
-        var modalContent = document.getElementById("modal-content");
-        modalContent.innerHTML = "Details for Book ID " + Id;
-
-        // Show the modal
-        var modal = document.getElementById("myModal");
-        modal.style.display = "block";
+      function showDetails(button) {
+        var id = button.id;
       }
+    </script> 
 
-      function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-      }
-    </script>
   </body>
 </html>
 
