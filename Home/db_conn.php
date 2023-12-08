@@ -27,7 +27,7 @@ $result = $conn->query($sql);
 //     // Fetch and output the data
 //     while ($row = $result->fetch_assoc()) {
 //         print_r($row);
-//     }
+//     }  
 // } else {
 //     // Output an error message if the query fails
 //     echo "Error: " . $sql . "<br>" . $conn->error;

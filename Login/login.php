@@ -22,7 +22,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
 	    exit();
 	}else{
 		
-		$h_pass = md5($pass);
+		// $h_pass = md5($pass);
 
 		$sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$h_pass'";
 
@@ -36,7 +36,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
             	$_SESSION['id'] = $row['id'];
 				$_SESSION['email'] = $row['email'];
 				$_SESSION['code'] = $row['code'];
-            	header("Location: ../Home/home.php");
+            	header("Location: ../Home/admin.php");
 		        exit();
             }else{
 				header("Location: index.php?error=Incorect Phone number or password");
