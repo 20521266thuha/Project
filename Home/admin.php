@@ -92,6 +92,9 @@ $cat = mysqli_query($connection, $sql_cat);
                 <a href="home.php" class="navbar__links">Home</a>
             </li>
             <li class="navbar__item">
+                <a href="admin.php" class="navbar__links">Admin</a>
+            </li>
+            <li class="navbar__item">
                 <a href="https://www.instagram.com/mia.bookcorner/" class="navbar__links">About us</a>
             </li>
             <li class="navbar__item">
@@ -133,8 +136,8 @@ $cat = mysqli_query($connection, $sql_cat);
                     <td><?php echo $book->short_desc; ?></td>
                     <td><?php echo $book->category; ?></td>
                     <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
+                        <a href="./edit_book.php?book_id=<?php echo $book->id; ?>" class="btn btn-edit">Edit</a>
+                        <button type="button" class="btn btn-delete">Delete</button>
                     </td>
                     </tr>
                     <?php
