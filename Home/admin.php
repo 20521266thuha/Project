@@ -77,7 +77,7 @@ $cat = mysqli_query($connection, $sql_cat);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<body>
+<body style="background-color: beige">
 
 <!-- Navbar Section -->
 <nav class="navbar">
@@ -109,8 +109,12 @@ $cat = mysqli_query($connection, $sql_cat);
 <br>
 <div class="ad_body" style="margin-left: 50px">
     <div class="ad_body_left">
-        <h4>All Books</h4>
-        <table class="table table-bordered shadow" id="all-books" style="max-width:850px">
+        <div style="display: flex; justify-content:center">
+            <h4 id="all-books" style="flex:2;">All Books</h4>
+            <a href="add_book.php" class="btn btn-edit" style="flex: 1;background-color: cadetblue;max-width: 75px;margin-right: 23px;margin-bottom: 6px;padding-bottom: 3px;padding-top: 3px">Add</a>
+            <a href="./php/all_book_check.php" class="btn btn-edit" style="flex: 1;background-color: lightpink;max-width: 83px;margin-right: 73px;margin-bottom: 6px;padding-bottom: 3px;padding-top: 3px">See All</a>
+        </div>
+        <table class="table table-bordered shadow" style="max-width:850px; background-color:white">
             <thead>
             <tr>
                 <th>#</th>
@@ -137,7 +141,7 @@ $cat = mysqli_query($connection, $sql_cat);
                     <td><?php echo $book->category; ?></td>
                     <td>
                         <a href="./edit_book.php?book_id=<?php echo $book->id; ?>" class="btn btn-edit">Edit</a>
-                        <button type="button" class="btn btn-delete">Delete</button>
+                        <a href="./php/func_delete.php?book_id=<?php echo $book->id; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
                     </td>
                     </tr>
                     <?php
@@ -147,8 +151,13 @@ $cat = mysqli_query($connection, $sql_cat);
         </table>
 
         <br>
-        <h4>All Categories</h4>
-        <table class="table table-bordered shadow" id="all-categories" style="max-width:850px" >
+        <div style="display: flex; justify-content:center">
+            <h4 style="flex: 2">All Categories</h4>
+            <a href="add_cat.php" class="btn btn-edit" style="flex: 1;background-color: cadetblue;max-width: 75px;margin-right: 23px;margin-bottom: 6px;padding-bottom: 3px;padding-top: 3px">Add</a>
+            <a href="./php/all_cat_check.php" class="btn btn-edit" style="flex: 1;background-color: lightpink;max-width: 83px;margin-right: 380px;margin-bottom: 6px;padding-bottom: 3px;padding-top: 3px">See All</a>
+        </div>
+
+        <table class="table table-bordered shadow" id="all-categories" style="max-width:850px; background-color: white " >
             <thead>
                 <tr>
                     <th>#</th>
@@ -164,8 +173,8 @@ $cat = mysqli_query($connection, $sql_cat);
                     <td><?php echo $cate->id; ?></td>
                     <td><?php echo $cate->name; ?></td>
                     <td>
-                        <button type="button" class="btn btn-edit">Edit</button>
-                        <button type="button" class="btn btn-delete">Delete</button>
+                        <a href="./edit_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-edit">Edit</a>
+                        <a href="./php/func_delete_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
                     </td>
                     </tr>
                     <?php
@@ -175,19 +184,20 @@ $cat = mysqli_query($connection, $sql_cat);
         </table>
     </div>
 
-    <div class="ad_body_right" id="menu">
+    <div class="ad_body_right" id="menu" style="background-color:beige">
         <table style="margin-top: 37px; max-width: 80%; border-radius: 2px;">
             <tr>
                 <th>Navigation</th>
             </tr>
-            <tr>
-                <td><a href="#all-books">All Books</a></td>
+            <tr style="background-color:white">
+                <td><a href="#all-books" >All Books</a></td>
+
             </tr>
-            <tr>
+            <tr style="background-color:white">
                 <td><a href="#all-categories">All Categories</a></td>
             </tr>
         </table>
-</div>
+    </div>
     </div>
 </div>        
 
@@ -213,7 +223,6 @@ $cat = mysqli_query($connection, $sql_cat);
   }
 </script>
 
-
 <script>
         window.onscroll = function() {scrollFunction()};
 
@@ -225,8 +234,21 @@ $cat = mysqli_query($connection, $sql_cat);
                 menu.classList.remove("sticky");
             }
         }
-    </script>
+</script>
 
+<script>
+    window.onload = function () {
+        // Check if there is an anchor in the URL
+        var anchor = window.location.hash;
+        if (anchor) {
+            // Scroll to the element with the corresponding ID (e.g., cat_123)
+            var element = document.getElementById(anchor.substring(1));
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+</script>
 
 </body>
 </html>

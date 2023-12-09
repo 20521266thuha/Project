@@ -1,151 +1,55 @@
-<?php  
+<?php
 session_start();
+include "db_conn.php";
 
-# If the admin is logged in
-// if (isset($_SESSION['user_id']) &&
-//     isset($_SESSION['user_email'])) {
+$connection = mysqli_connect("localhost", "root", "", "book_t");
 
-	# Database Connection File
-	include "../db_conn.php";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $bookTitle = $_POST['book_title'];
+    $bookAuthor = $_POST['book_author'];
+    $bookDescription = $_POST['book_description'];
+    $bookCategory = $_POST['book_category'];
+    $shortDescription = $_POST['short_description'];
+    $bookLink = $_POST['book_link'];
 
-    # Validation helper function
-    include "func-validation.php";
+	// Handling file upload for the book cover
+	if ($_FILES['book_cover']['error'] == 0) {
+    // Specify the target directory
+    $targetDir = "../Assets/";
 
-    # File Upload helper function
-    include "func-file-upload.php";
-
-
-    /** 
-	  If all Input field
-	  are filled
-	**/
-	if (isset($_POST['book_title'])       &&
-        isset($_POST['book_author'])      &&
-        isset($_POST['book_description']) &&
-        isset($_POST['book_category'])    &&
-        isset($_FILES['book_cover'])      &&
-        isset($_FILES['short_description']) &&
-        isset($_FILES['book_link'])) {
-		/** 
-		Get data from POST request 
-		and store them in var
-		**/
-		$title       = $_POST['book_title'];
-        $author      = $_POST['book_author'];
-		$description = $_POST['book_description'];
-		$category    = $_POST['book_category'];
-        $cover       = $_POST['book_cover'];
-        $short_desc       = $_POST['short_description'];
-        $link       = $_POST['book_link']
-        ;
-
-		# making URL data format
-		$user_input = 'title='.$title.'author='.$author.'description='.$description.'&category='.$category.'cover='.$cover.'&short_desc='.$short_desc.'&link='.$link;
-
-		#simple form Validation
-
-        $text = "Book title";
-        $location = "../add-book.php";
-        $ms = "error";
-		is_empty($title, $text, $location, $ms, $user_input);
-
-		$text = "Book description";
-        $location = "../add-book.php";
-        $ms = "error";
-		is_empty($description, $text, $location, $ms, $user_input);
-
-		$text = "Book author";
-        $location = "../add-book.php";
-        $ms = "error";
-		is_empty($author, $text, $location, $ms, $user_input);
-
-		$text = "Book category";
-        $location = "../add-book.php";
-        $ms = "error";
-		is_empty($category, $text, $location, $ms, $user_input);
-        
-        # book cover Uploading
-        $allowed_image_exs = array("jpg", "jpeg", "png");
-        $path = "cover";
-        $book_cover = upload_file($_FILES['book_cover'], $allowed_image_exs, $path);
-
-        /**
-	    If error occurred while 
-	    uploading the book cover
-	    **/
-	    if ($book_cover['status'] == "error") {
-	    	$em = $book_cover['data'];
-
-	    	/**
-	    	  Redirect to '../add-book.php' 
-	    	  and passing error message & user_input
-	    	**/
-	    	header("Location: ../add-book.php?error=$em&$user_input");
-	    	exit;
-	    }else {
-	    	# file Uploading
-            $allowed_file_exs = array("pdf", "docx", "pptx");
-            $path = "files";
-            $file = upload_file($_FILES['file'], $allowed_file_exs, $path);
-
-            /**
-		    If error occurred while 
-		    uploading the file
-		    **/
-		    if ($file['status'] == "error") {
-		    	$em = $file['data'];
-
-		    	/**
-		    	  Redirect to '../add-book.php' 
-		    	  and passing error message & user_input
-		    	**/
-		    	header("Location: ../add-book.php?error=$em&$user_input");
-		    	exit;
-		    }else {
-		    	/**
-		          Getting the new file name 
-		          and book cover name 
-		        **/
-		        $book_cover_URL = $book_cover['data'];
-                
-                # Insert the data into database
-                $sql  = "INSERT INTO books (title,
-                                            author_id,
-                                            description,
-                                            category,
-                                            cover,
-                                            short_desc
-                                            link)
-                         VALUES (?,?,?,?,?,?)";
-                $stmt = $conn->prepare($sql);
-			    $res  = $stmt->execute([$title, $author, $description, $category, $book_cover_URL, $file_URL]);
-
-			/**
-		      If there is no error while 
-		      inserting the data
-		    **/
-		     if ($res) {
-		     	# success message
-		     	$sm = "The book successfully created!";
-				header("Location: ../add-book.php?success=$sm");
-	            exit;
-		     }else{
-		     	# Error message
-		     	$em = "Unknown Error Occurred!";
-				header("Location: ../add-book.php?error=$em");
-	            exit;
-		     }
-
-		    }
-	    }
-
-		
-	}else {
-      header("Location: ../admin.php");
-      exit;
-	}
-
-else{
-  header("Location: ../login.php");
-  exit;
+    // Use the original filename and upload to the target directory
+    $bookCover = $targetDir . basename($_FILES['book_cover']['name']);
+    move_uploaded_file($_FILES['book_cover']['tmp_name'], $bookCover);
 }
+
+
+
+    // Insert new book details into the database
+    $sql = "INSERT INTO books (title, author_id, description, category, cover, short_desc, link)
+            VALUES ('$bookTitle', '$bookAuthor', '$bookDescription', '$bookCategory', '$bookCover', '$shortDescription', '$bookLink')";
+
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+		$lastInsertedId = mysqli_insert_id($connection);
+		echo "Last Inserted ID: " . $lastInsertedId;
+
+        $_SESSION['msg'] = "Book added successfully";
+        $_SESSION['res'] = true;
+
+		header("Location: ../admin.php#book_$lastInsertedId");
+		exit();
+
+    } else {
+        $_SESSION['msg'] = "Failed to add the book";
+        $_SESSION['res'] = false;
+    }
+
+    	// header("Location: ../admin.php#book_$lastInsertedId");
+        // exit();
+} else {
+    // Redirect if the form is not submitted
+    header("Location: add_book.php");
+    exit();
+}
+?>

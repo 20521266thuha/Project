@@ -153,16 +153,14 @@ include "db_conn.php";
               echo '<div class="Book-container2">';
           }
     ?>
-      <div class="row6">
-          <div class="row6">
-              <img src="./Assets/<?php echo $book->cover; ?>" alt="">
-              <p style="color: #097969; padding-top: 20px"><b><?php echo $book->title; ?></b></p>
-              <p style="font-size: 15px;"><i>Author: <?php echo $book->author_id; ?></i></p>
-              <p><?php echo $book->short_desc; ?></p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $book->id; ?>" id="<?php echo $book->id; ?>" 
-              onclick="showDetails(this);">Review</button>
-              <a href="<?php echo $book->link; ?>" target="_blank" class="btn btn-success">Buy</a>
-          </div>  
+      <div id="book_<?php echo $book->id; ?>" class="row6">
+        <img src="./Assets/<?php echo $book->cover; ?>" alt="">
+        <p style="color: #097969; padding-top: 20px"><b><?php echo $book->title; ?></b></p>
+        <p style="font-size: 15px;"><i>Author: <?php echo $book->author_id; ?></i></p>
+        <p><?php echo $book->short_desc; ?></p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $book->id; ?>" id="<?php echo $book->id; ?>" 
+            onclick="showDetails(this);">Review</button>
+        <a href="<?php echo $book->link; ?>" target="_blank" class="btn btn-success">Buy</a>
       </div>
 
     <?php

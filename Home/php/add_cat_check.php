@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
 
         if (empty($name)) {
             $msg = "The category name is required";
-			header("Location: ../add_cat.php?error=$msg");
+            header("Location: ../add_cat.php?error=$msg");
         } else {
             // Use prepared statement to prevent SQL injection
             $sql = "INSERT INTO categories (name) VALUES (?)";
@@ -24,19 +24,21 @@ if (isset($_POST['submit'])) {
 
             if ($res) {
                 $msg = "Successfully created!";
-				header("Location: ../add_cat.php?error=$msg");
+                header("Location: ../admin.php#all-categories");
+                exit();
             } else {
                 $msg = "Unknown Error Occurred!";
-				header("Location: ../add_cat.php?error=$msg");
+                header("Location: ../add_cat.php?error=$msg");
+                exit();
             }
         }
     } else {
         $msg = "Category name is not submitted";
-		header("Location: ../add_cat.php?error=$msg");
-
+        header("Location: ../add_cat.php?error=$msg");
+        exit();
     }
 } else {
     header("Location: ../admin.php");
-    exit;
+    exit();
 }
 ?>

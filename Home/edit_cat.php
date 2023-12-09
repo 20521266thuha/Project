@@ -1,3 +1,23 @@
+<?php
+session_start();
+include "db_conn.php";
+
+$connection = mysqli_connect("localhost", "root", "", "book_t");
+
+if (isset($_GET['cat_id'])) {
+    $categoryId = $_GET['cat_id'];
+
+    // Fetch category details from the database using $categoryId
+    $sql = "SELECT * FROM categories WHERE id = $categoryId";
+    $result = mysqli_query($connection, $sql);
+    $categoryDetails = mysqli_fetch_assoc($result);
+} else {
+    // Redirect or handle the case where cat_id is not provided
+    header("Location: admin.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,19 +59,15 @@
 </nav>
 
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh; margin-top: -90px; background-color: beige;">
-    <form action="php/add_cat_check.php"
+        <form action="php/edit_cat_check.php" 
         method="post" 
         class="shadow p-4 rounded mt-5"
         style="width: 90%; max-width: 50rem; background-color: #368469; color: #fff;">
 
-        <h3 class="text-center mb-4">Add New Category</h3>
+        <h3 class="text-center mb-4">Edit Category</h3>
 
-        <?php if (!empty($msg)): ?>
-            <div class="alert alert-<?php echo $res ? 'success' : 'danger'; ?>" role="alert">
-                <?php echo $msg; ?>
-            </div>
-        <?php endif; ?>
-
+        <!-- Include form fields to edit category information -->
+        <input type="hidden" name="cat_id" value="<?php echo $categoryDetails['id']; ?>">
         <div class="mb-3">
             <label for="category_name" class="form-label">Category Name</label>
             <input type="text" 
@@ -59,9 +75,9 @@
                 id="category_name" 
                 name="category_name"
                 placeholder="Enter category name" 
+                value="<?php echo $categoryDetails['name']; ?>"
                 required>
         </div>
-
         <button type="submit" 
                 name="submit"
                 class="btn btn-light btn-block" 
@@ -69,7 +85,5 @@
                 Add Category
         </button>
     </form>
-</div>
-
 </body>
 </html>

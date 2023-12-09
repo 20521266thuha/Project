@@ -46,12 +46,6 @@ if (isset($_GET['book_id'])) {
             <li class="navbar__item">
                 <a href="admin.php" class="navbar__links">Admin</a>
             </li>
-            <li class="navbar__item">
-                <a href="add_book.php" class="navbar__links">Add Book</a>
-            </li>
-            <li class="navbar__item">
-                <a href="add_cat.php" class="navbar__links">Add Category</a>
-            </li>
             <li class="navbar__btn"><a href="../Login/login.php" class="button">LOG OUT</a></li>
         </ul>
     </div>
@@ -66,7 +60,7 @@ if (isset($_GET['book_id'])) {
 
         <h3 class="text-center mb-4">Edit Book</h3>
 
-        <?php
+        <!-- <?php
             if (isset($_SESSION['msg'])) {
                 $msg = $_SESSION['res'] ? 'success' : 'danger';
                 echo '<div class="alert alert-' . $msg . '" role="alert">';
@@ -74,7 +68,7 @@ if (isset($_GET['book_id'])) {
                 echo '</div>';
                 unset($_SESSION['msg'], $_SESSION['res']);
             }
-        ?>
+        ?> -->
 
         <input type="hidden" name="book_id" value="<?php echo $bookDetails['id']; ?>">
 
@@ -172,6 +166,12 @@ if (isset($_GET['book_id'])) {
         </button>
     </form>
 </div>
-
+<?php
+    // Check for the session variable and display the notification
+    // if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
+    //     echo "<script>alert('Update successful!');</script>";
+    //     unset($_SESSION['update_success']); // Clear the session variable
+    // }
+    // ?>
 </body>
 </html>

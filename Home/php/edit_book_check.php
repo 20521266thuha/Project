@@ -41,6 +41,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result) {
         $msg = "Book information updated successfully";
         $res = true;
+
+        echo "<script>
+                if(confirm('Update successful! Back to Admin?')) {
+                    window.location.href = '../admin.php';
+                } else {
+                    window.location.href = '../edit_book.php?book_id=$bookId';
+                }
+              </script>";
+        exit();
+                
     } else {
         $msg = "Error updating book information: " . mysqli_error($connection);
         $res = false;
@@ -54,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: admin.php");
     exit();
 }
+
 
 // You can handle the $msg and $res values as needed (e.g., display a message to the user)
 ?>

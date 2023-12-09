@@ -25,6 +25,9 @@
                 <a href="home.php" class="navbar__links">Store</a>
             </li>
             <li class="navbar__item">
+                <a href="admin.php" class="navbar__links">Admin</a>
+            </li>
+            <li class="navbar__item">
                 <a href="add_book.php" class="navbar__links">Add Book</a>
             </li>
             <li class="navbar__item">
@@ -36,8 +39,9 @@
 </nav>
 
 <div class="d-flex justify-content-center align-items-center" style="    background-color: beige;">
-    <form action="php/add_cat_check.php"
+        <form action="php/add_book_check.php"
         method="post" 
+        enctype="multipart/form-data"
         class="shadow p-4 rounded mt-5"
         style="width: 90%; max-width: 50rem; background-color: #368469; color: #fff;">
 
@@ -91,11 +95,14 @@
 
         <div class="mb-3">
             <label for="book_cover" class="form-label">Cover</label>
-            <input type="text" 
+            <input type="file" 
                 class="form-control" 
                 id="book_cover" 
                 name="book_cover"
-                placeholder="Enter category name" 
+                placeholder="Select book cover" 
+                value="<?php echo $bookDetails['cover']; ?>"
+                style="color: gray"
+                accept="image/*"
                 required>
         </div>
 
