@@ -35,7 +35,7 @@ if (isset($_GET['cat_id'])) {
 <!-- Navbar Section -->
 <nav class="navbar">
     <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+    <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
             <span class="bar"></span> <span class="bar"></span>
             <span class="bar"></span>
@@ -47,13 +47,7 @@ if (isset($_GET['cat_id'])) {
             <li class="navbar__item">
                 <a href="admin.php" class="navbar__links">Admin</a>
             </li>
-            <li class="navbar__item">
-                <a href="add_book.php" class="navbar__links">Add Book</a>
-            </li>
-            <li class="navbar__item">
-                <a href="add_cat.php" class="navbar__links">Add Category</a>
-            </li>
-            <li class="navbar__btn"><a href="../Login/login.php" class="button">LOG OUT</a></li>
+            <li class="navbar__btn" style="width: 32%;"><a href="../Login/login.php" class="button" style="width: 100%">LOG OUT</a></li>
         </ul>
     </div>
 </nav>

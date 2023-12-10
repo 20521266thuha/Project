@@ -73,30 +73,23 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
 <!-- Navbar Section -->
 <nav class="navbar">
-<nav class="navbar">
     <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+    <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
             <span class="bar"></span> <span class="bar"></span>
             <span class="bar"></span>
         </div>
         <ul class="navbar__menu">
             <li class="navbar__item">
-                <a href="home.php" class="navbar__links">Home</a>
+                <a href="home.php" class="navbar__links">Store</a>
             </li>
             <li class="navbar__item">
-                <a href="admin.php" class="navbar__links">Admin</a>
+                <a href="../admin.php" class="navbar__links">Admin</a>
             </li>
-            <li class="navbar__item">
-                <a href="https://www.instagram.com/mia.bookcorner/" class="navbar__links">About us</a>
-            </li>
-            <li class="navbar__item">
-                <a href="/" class="navbar__links">Contact</a>
-            </li>
-            <li class="navbar__btn"><a href="../Login/login.php" class="button">LOG OUT</a></li>
+            <li class="navbar__btn" style="width: 32%;"><a href="../Login/login.php" class="button" style="width: 100%">LOG OUT</a></li>
         </ul>
     </div>
-</nav></nav>
+</nav>
 
 <!-- All cats -->
 <br>

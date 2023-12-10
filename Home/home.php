@@ -27,6 +27,20 @@ include "db_conn.php";
     $sql = "SELECT * FROM books LIMIT $offset, $booksPerPage";
     $result = mysqli_query($connection, $sql);
 
+    // Fetch books for the current page with search
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
+      $searchTerm = mysqli_real_escape_string($connection, $_GET['search']);
+      $sql = "SELECT * FROM books 
+              WHERE title LIKE '%$searchTerm%' 
+              OR author_id LIKE '%$searchTerm%' 
+              LIMIT $offset, $booksPerPage";
+    } else {
+      // Fetch books for the current page without search
+      $sql = "SELECT * FROM books LIMIT $offset, $booksPerPage";
+    }
+
+    $result = mysqli_query($connection, $sql);
+
     // Fetch categories from the database
     $sqlCategories = "SELECT * FROM categories";
     $resultCategories = mysqli_query($connection, $sqlCategories);
@@ -79,7 +93,7 @@ include "db_conn.php";
     <!-- Navbar Section -->
     <nav class="navbar">
       <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
           <span class="bar"></span> <span class="bar"></span>
           <span class="bar"></span>
@@ -114,34 +128,30 @@ include "db_conn.php";
         </div>
     </div>
 
-    <div class="space" style="HEIGHT: 30px; background-color: #fada5e ">
-    </div>
+    <!-- space bar  -->
+    <div class="space" style="HEIGHT: 30px; background-color: #fada5e "></div>
 
-      
-    <form action="search.php" method="post" style="background-color: beige; padding-top: 30px; padding-left: 120px;">
-              <label for="search" style="display: none;">Search book</label>
-              <input id="search" name="text" style="height: 35px; width: 300px; margin-left: 81px;" placeholder="Search book...">
-              <button name="submit" style="height: 37px; width: 42px; font-size: 16px; cursor: pointer;">
-                  &#128269; 
-              </button>
-          </form>
+    <!-- Search bar -->
+  <div class="search-container d-flex justify-content-end" id="search"style="padding-bottom: 20px; background-color: beige">
+    <form method="get" class="d-flex" style="margin-top: 19px">
+        <input type="text" class="form-control search-input" name="search" style="width: 867px; margin-right: 10px; color: gray" placeholder="Search by book name or author name" value="<?= isset($_GET['search']) ? $_GET['search'] : '' ?>">
+        <button type="submit" class="btn btn-primary search-button" style="margin-right: 152px; background-color: #046543">Search</button>
+    </form>
+  </div>
 
-    
-          <div class="cat" style="background-color: beige; padding-left: 200px; padding-top: 20px;">
-            <label>Categories</label>
-            <button class="category-btn" data-category-id="all" style="margin-left: 8px; width:100px; border-radius: 4px; height:29px;">All</button>
-            <?php
-            if (!empty($categories)) {
-                foreach ($categories as $category) {
-                    echo '<button class="category-btn" data-category-id="' . htmlspecialchars($category['id']) . '" style="margin-left: 8px; width:100px; border-radius: 4px; height:29px;">' . htmlspecialchars($category['name']) . '</button>';
-                }
-            }
-            ?>
-          </div>
+    <!-- Category Section -->
+  <div class="category-section" style="background-color: beige; padding-left: 171px; padding-top: -2px;">
+    <label>Sort by: </label>
+    <button class="category-btn" data-category-id="all" style="margin-left: 8px; width:100px; border-radius: 4px; height:29px; background-color: #e5c587">All</button>
+    <?php
+      if (!empty($categories)) {
+        foreach ($categories as $category) {
+          echo '<button class="category-btn" data-category-id="' . htmlspecialchars($category['id']) . '" style="margin-left: 8px; width:100px; border-radius: 4px; height:29px;background-color: #e5c587">' . htmlspecialchars($category['name']) . '</button>';
+        } 
+      }
+    ?>
+  </div>
 
-
-
-    
     <div id="books-container" style=" padding-top: 20px;background-color: beige"></div>
 
 
@@ -150,7 +160,7 @@ include "db_conn.php";
       while ($book = mysqli_fetch_object($result)) {
           $counter++;
           if ($counter % 3 == 1) {
-              echo '<div class="Book-container2">';
+            echo '<div class="Book-container2" data-category="' . htmlspecialchars($book->category) . '">';
           }
     ?>
       <div id="book_<?php echo $book->id; ?>" class="row6">
@@ -299,44 +309,45 @@ if ($counter % 3 != 0) {
     <!-- Add this script at the end of your HTML body -->
     <script>
     $(document).ready(function() {
-        function loadBooks(categoryId) {
-            $.ajax({
-                type: 'POST',
-                url: './php/load_book.php',
-                data: { category_id: categoryId },
-                success: function(response) {
-                    // Update the HTML of the books-container with the received response
-                    $('#books-container').html(response);
-                    $('.pages').toggle(categoryId == 'all');
-                }
-            });
-        }
-
-          loadBooks('all');
-
-        // Attach click event to category buttons
-        $('.category-btn').on('click', function() {
-            var categoryId = $(this).data('category-id');
-            console.log('Category button clicked: ' + categoryId); // Debugging statement
-            loadBooks(categoryId);
-
-            // Hide all books not belonging to the selected category
-            $('.Book-container2').each(function() {
-                var bookCategory = $(this).data('category');
-                if (bookCategory == categoryId || categoryId == 'all')  {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
+    function loadBooks(categoryId) {
+        $.ajax({
+            type: 'POST',
+            url: './php/load_book.php',
+            data: { category_id: categoryId },
+            success: function(response) {
+                // Update the HTML of the books-container with the received response
+                $('#books-container').html(response);
+                $('.pages').toggle(categoryId === 'all');
+            }
         });
+    }
 
-        // Load books for the default category (you may choose the default category based on your requirements)
-        loadBooks(<?php echo $categories[0]['id']; ?>);
+    loadBooks('all');
 
-        // Trigger the click event for the "All Categories" button on page load
-        $('.category-btn[data-category-id="all"]').click();
+    // Attach click event to category buttons
+    $('.category-btn').on('click', function() {
+        var categoryId = $(this).data('category-id');
+        console.log('Category button clicked: ' + categoryId); // Debugging statement
+        loadBooks(categoryId);
+
+        // Hide all books not belonging to the selected category
+        $('.Book-container2').each(function() {
+            var bookCategory = $(this).data('category');
+            if (bookCategory == categoryId || categoryId == 'all')  {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
     });
+
+    // Load books for the default category (you may choose the default category based on your requirements)
+    loadBooks('all');
+
+    // Trigger the click event for the "All Categories" button on page load
+    $('.category-btn[data-category-id="all"]').click();
+});
+
       </script>
 
 

@@ -4,14 +4,13 @@ include "../db_conn.php";
 $connection = mysqli_connect("localhost", "root", "", "book_t");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $bookId = $_POST['book_id'];
-    $bookTitle = $_POST['book_title'];
-    $bookAuthor = $_POST['book_author'];
-    $bookDescription = $_POST['book_description'];
-    $bookCategory = $_POST['book_category'];
-    $bookCover = $_POST['book_cover'];
-    $shortDescription = $_POST['short_description'];
-    $bookLink = $_POST['book_link'];
+    $bookId = mysqli_real_escape_string($connection, $_POST['book_id']);
+    $bookTitle = mysqli_real_escape_string($connection, $_POST['book_title']);
+    $bookAuthor = mysqli_real_escape_string($connection, $_POST['book_author']);
+    $bookDescription = mysqli_real_escape_string($connection, $_POST['book_description']);
+    $bookCategory = mysqli_real_escape_string($connection, $_POST['book_category']);
+    $shortDescription = mysqli_real_escape_string($connection, $_POST['short_description']);
+    $bookLink = mysqli_real_escape_string($connection, $_POST['book_link']);
 
     if ($_FILES['book_cover']['error'] == 0) {
         // Set a target directory for your uploads
@@ -23,20 +22,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded file to the target directory
         move_uploaded_file($_FILES["book_cover"]["tmp_name"], $bookCover);
     }
-    
 
-    // Perform the database update
+    // Use prepared statements to prevent SQL injection
     $sql = "UPDATE books SET 
-            title = '$bookTitle',
-            author_id = '$bookAuthor',
-            short_desc = '$shortDescription',
-            category = '$bookCategory',
-            cover = '$bookCover',
-            description = '$bookDescription',
-            link = '$bookLink'
-            WHERE id = $bookId";
+            title = ?,
+            author_id = ?,
+            short_desc = ?,
+            category = ?,
+            cover = ?,
+            description = ?,
+            link = ?
+            WHERE id = ?";
 
-    $result = mysqli_query($connection, $sql);
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, "sssssssi", $bookTitle, $bookAuthor, $shortDescription, $bookCategory, $bookCover, $bookDescription, $bookLink, $bookId);
+    $result = mysqli_stmt_execute($stmt);
 
     if ($result) {
         $msg = "Book information updated successfully";
@@ -50,21 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
               </script>";
         exit();
-                
     } else {
         $msg = "Error updating book information: " . mysqli_error($connection);
         $res = false;
     }
-
-    header("Location: ../edit_book.php?book_id=$bookId");
-    exit();
-
 } else {
     // Redirect or handle the case where the form was not submitted
     header("Location: admin.php");
     exit();
 }
 
-
-// You can handle the $msg and $res values as needed (e.g., display a message to the user)
+// Handle the $msg and $res values as needed (e.g., display a message to the user)
 ?>

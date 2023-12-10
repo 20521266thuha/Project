@@ -34,7 +34,7 @@ if (isset($_GET['book_id'])) {
 <!-- Navbar Section -->
 <nav class="navbar">
     <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+    <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
             <span class="bar"></span> <span class="bar"></span>
             <span class="bar"></span>

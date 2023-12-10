@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MIA BOOK CORNER</title>
+    <title>ADMIN</title>
     <link rel="stylesheet" href="./Style/index.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
 <!-- Navbar Section -->
 <nav class="navbar">
     <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+    <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
             <span class="bar"></span> <span class="bar"></span>
             <span class="bar"></span>
@@ -27,13 +28,7 @@
             <li class="navbar__item">
                 <a href="admin.php" class="navbar__links">Admin</a>
             </li>
-            <li class="navbar__item">
-                <a href="add_book.php" class="navbar__links">Add Book</a>
-            </li>
-            <li class="navbar__item">
-                <a href="add_cat.php" class="navbar__links">Add Category</a>
-            </li>
-            <li class="navbar__btn"><a href="../Login/login.php" class="button">LOG OUT</a></li>
+            <li class="navbar__btn" style="width: 32%;"><a href="../Login/login.php" class="button" style="width: 100%">LOG OUT</a></li>
         </ul>
     </div>
 </nav>

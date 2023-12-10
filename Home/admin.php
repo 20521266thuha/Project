@@ -2,6 +2,13 @@
 session_start(); 
 include "db_conn.php";
 
+
+// Check if the user is not logged in
+// if (!isset($_SESSION['uname']) || empty($_SESSION['password'])) {
+//     header("Location: ../Login/index.php");
+//     exit();
+// }
+
 $connection = mysqli_connect("localhost", "root", "", "book_t");
 $sql = "SELECT * FROM books";
 $result = mysqli_query($connection, $sql);
@@ -82,25 +89,19 @@ $cat = mysqli_query($connection, $sql_cat);
 <!-- Navbar Section -->
 <nav class="navbar">
     <div class="navbar__container">
-        <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>REVIEW CORNER</a>
+    <a href="/" id="navbar__logo"><i class="fas fa-gem"></i>MIA BOOK CORNER</a>
         <div class="navbar__toggle" id="mobile-menu">
             <span class="bar"></span> <span class="bar"></span>
             <span class="bar"></span>
         </div>
         <ul class="navbar__menu">
             <li class="navbar__item">
-                <a href="home.php" class="navbar__links">Home</a>
+                <a href="home.php" class="navbar__links">Store</a>
             </li>
             <li class="navbar__item">
                 <a href="admin.php" class="navbar__links">Admin</a>
             </li>
-            <li class="navbar__item">
-                <a href="https://www.instagram.com/mia.bookcorner/" class="navbar__links">About us</a>
-            </li>
-            <li class="navbar__item">
-                <a href="/" class="navbar__links">Contact</a>
-            </li>
-            <li class="navbar__btn"><a href="../Login/login.php" class="button">LOG OUT</a></li>
+            <li class="navbar__btn" style="width: 32%;"><a href="../Login/login.php" class="button" style="width: 100%">LOG OUT</a></li>
         </ul>
     </div>
 </nav>
@@ -140,8 +141,8 @@ $cat = mysqli_query($connection, $sql_cat);
                     <td><?php echo $book->short_desc; ?></td>
                     <td><?php echo $book->category; ?></td>
                     <td>
-                        <a href="./edit_book.php?book_id=<?php echo $book->id; ?>" class="btn btn-edit">Edit</a>
-                        <a href="./php/func_delete.php?book_id=<?php echo $book->id; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+                        <a href="./edit_book.php?book_id=<?php echo $book->id; ?>" class="btn btn-edit" style="background-color: #e6e6b9;">Edit</a>
+                        <a href="./php/func_delete.php?book_id=<?php echo $book->id; ?>" class="btn btn-delete" style="background-color: #f87e72;margin-top: 11px" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
                     </td>
                     </tr>
                     <?php
@@ -173,8 +174,8 @@ $cat = mysqli_query($connection, $sql_cat);
                     <td><?php echo $cate->id; ?></td>
                     <td><?php echo $cate->name; ?></td>
                     <td>
-                        <a href="./edit_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-edit">Edit</a>
-                        <a href="./php/func_delete_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+                        <a href="./edit_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-edit" style="background-color: #e6e6b9;">Edit</a>
+                        <a href="./php/func_delete_cat.php?cat_id=<?php echo $cate->id; ?>" class="btn btn-delete" style="background-color: #f87e72;margin-left: 4  px" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
                     </td>
                     </tr>
                     <?php
